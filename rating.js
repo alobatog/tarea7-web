@@ -29,6 +29,7 @@ class Rating extends HTMLElement {
     }
 
     setStars(n){
+        console.log(this.max)
         let stars = this.$rating.getElementsByTagName('img');
         for(let i = 0; i < this.max; i++){
             if(i <= +n - 1){ 
@@ -52,6 +53,7 @@ class Rating extends HTMLElement {
     }
 
     createRating() {
+        this.$rating.innerHTML = '';
         this.picture = this.pictue ? this.picture : 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT-TvAl13LTtRPcOU3y6KN-qv_TiiThMFYvMg&usqp=CAU'
         if(!this.max || this.max < 1){
             this.max = 5;
@@ -77,7 +79,7 @@ class Rating extends HTMLElement {
     }
 
     render(){
-        this.createRating
+        this.createRating();
     }
 }
 
