@@ -74,10 +74,6 @@ class Rating extends HTMLElement {
         this.render();
     }
 
-    connectedCallback() {
-        this.createRating();
-    }
-
     render(){
         this.createRating();
     }
