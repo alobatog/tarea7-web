@@ -1,13 +1,16 @@
 const cardTemplate = document.createElement('template');
- 
+
 cardTemplate.innerHTML = `
 <style>
     .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    max-width: 300px;
+    max-width: 250px;
     margin: auto;
     text-align: center;
     font-family: arial;
+    height: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
     }
 
     .name {
@@ -51,41 +54,45 @@ cardTemplate.innerHTML = `
   <p class="normal"></p>
 </div>
 `;
- 
+
 class Card extends HTMLElement {
   constructor() {
     super();
- 
+
     this._shadowRoot = this.attachShadow({ mode: 'open' });
     this._shadowRoot.appendChild(cardTemplate.content.cloneNode(true));
+    this.$card = this._shadowRoot.querySelector('.card');
     this.$name = this._shadowRoot.querySelector('.name');
     this.$normal = this._shadowRoot.querySelector('.normal');
     this.$internet = this._shadowRoot.querySelector('.internet');
     this.$price = this._shadowRoot.querySelector('.price');
     this.$picture = this._shadowRoot.querySelector('.picture');
     this.$discount = this._shadowRoot.querySelector('.discount');
-
-    //this.$normal.addEventListener('click', () => console.log())
-
   }
 
   static get observedAttributes() {
-    return ['normal', 'internet', 'name', 'price', 'picture', 'discount'];
+    return ['normal', 'internet', 'name', 'price', 'picture', 'discount', 'rating'];
   }
- 
+
+  connectedCallback() {
+    const ratingEl = document.createElement('my-rating');
+    ratingEl.setAttribute('rating', this.rating || 1);
+    this.$card.appendChild(ratingEl);
+  }
+
   attributeChangedCallback(name, oldVal, newVal) {
     this[name] = newVal;
     this.render();
   }
 
   render() {
-    this.$normal.innerHTML = this.normal;
-    this.$internet.innerHTML = this.internet;
-    this.$name.innerHTML = this.name;
-    this.$price.innerHTML = this.price;
-    this.$picture.src = this.picture;
-    this.$discount.innerHTML = ` ${this.discount} de descuento`;
+    this.$normal.innerHTML = this.normal || '';
+    this.$internet.innerHTML = this.internet || '';
+    this.$name.innerHTML = this.name || '';
+    this.$price.innerHTML = this.price || '';
+    this.$picture.src = this.picture || '';
+    this.$discount.innerHTML = this.discount ? `${this.discount} de descuento` : '';
   }
 }
- 
+
 window.customElements.define('my-card', Card);
