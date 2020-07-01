@@ -29,9 +29,11 @@ class Rating extends HTMLElement {
         this._shadowRoot = this.attachShadow({mode: 'open'});
         this._shadowRoot.appendChild(ratingTemplate.content.cloneNode(true));
         this.$rating = this._shadowRoot.querySelector('.rating');
+        
     }
 
     setStars(n){
+        this.setAttribute('rating', n)
         let stars = this.$rating.getElementsByTagName('img');
         for(let i = 0; i < this.max; i++){
             if(i <= +n - 1){
@@ -47,7 +49,7 @@ class Rating extends HTMLElement {
         for(let i = 1; i <= +this.max; i++){
             let star = document.createElement('img');
             star.setAttribute('id', `${i}`);
-            star.setAttribute('class', 'starRated');
+            star.setAttribute('class', 'starNotRated');
             star.setAttribute('src', this.picture)
             star.addEventListener('click', () => this.setStars(star.id))
             this.$rating.appendChild(star);
@@ -64,11 +66,15 @@ class Rating extends HTMLElement {
             this.rating = 1;
         }
         this.createStars()
-        this.setStars(this.rating)
     }
 
     static get observedAttributes() {
         return ['rating', 'max', 'picture'];
+    }
+
+    connectedCallback(){
+        this.render()
+        this.setStars(this.rating)
     }
 
     attributeChangedCallback(name, oldVal, newVal){

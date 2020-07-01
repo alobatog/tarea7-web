@@ -7,11 +7,12 @@ filterTemplate.innerHTML = `
 
   <div class="filter">
     <div>
-      <p class="filter-title"></p>
+      <h2 class="filter-title"></h2>
     </div>
-    <div>
+    <div class="filter-body">
       <p class="input-filter-label"></p>
       <input id="input-filter"/>
+      <p> Numero minimo de estrellas: </p>
     </div>
   </div>
 `
@@ -24,6 +25,7 @@ class Filter extends HTMLElement {
     this._shadowRoot.appendChild(filterTemplate.content.cloneNode(true));
     this.$filterTitle = this._shadowRoot.querySelector('.filter-title');
     this.$inputFilterLabel = this._shadowRoot.querySelector('.input-filter-label');
+    this.$body = this._shadowRoot.querySelector('.filter-body')
   }
 
   static get observedAttributes() {
@@ -33,6 +35,10 @@ class Filter extends HTMLElement {
   connectedCallback() {
     this.$filterTitle.innerHTML = this.title || 'Filter';
     this.$inputFilterLabel.innerHTML = this.label || 'Filtrar por nombre';
+    const ratingEl = document.createElement('my-rating');
+    ratingEl.setAttribute('rating', 0);
+    ratingEl.setAttribute('id', 'input-star');
+    this.$body.appendChild(ratingEl);
     this.addEventListener('keypress', (e) => {
       if (e.keyCode === 13) {
         this.dispatchEvent(new Event('filter-elements', {bubbles: true, composed: true}))

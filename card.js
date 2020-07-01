@@ -91,7 +91,7 @@ class Card extends HTMLElement {
     this.$name.innerHTML = this.name || '';
     this.$price.innerHTML = this.price || '';
     this.$picture.src = this.picture || '';
-    this.$discount.innerHTML = this.discount ? `${this.discount} de descuento` : '';
+    this.$discount.innerHTML = this.discount ? `${this.discount}% de descuento` : '';
   }
 }
 
