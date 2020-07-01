@@ -15,7 +15,7 @@ cardTemplate.innerHTML = `
 
     .name {
     color: black;
-    font-size: 32px;
+    font-size: 15px;
     }
 
     .discount {

@@ -81,19 +81,41 @@ const elements = [
   }
 ]
 
-window.addEventListener('load', () => {
+async function fetchproducts(){
+  let fetchresult =  await fetch("https://api.bestbuy.com/v1/products(customerReviewCount=5&(categoryPath.id=abcat0502000))?apiKey=WH8H7fy2kfYb81XF7XhKlzgI&format=json", {
+	"method": "GET",
+  })
+  .then(response => {
+    return response.json();
+  })
+  .catch(err => {
+    console.log(err);
+  });
+
   elementsContainer = document.getElementById('right');
-  elements.forEach(elem => {
+  fetchresult.products.forEach(product => {
+    console.log("-----")
+    console.log(product.name)
+    console.log(product.regularPrice)
+    console.log(product.salePrice)
+    console.log(product.image)
+    console.log(product.percentSavings)
+    console.log(product.customerReviewAverage)
     const newEl = createRetailElement(
-      elem.title,
-      elem.normal,
-      elem.internet,
-      elem.discount,
-      elem.image,
-      elem.rate,
+      product.name,
+      product.regularPrice,
+      product.salePrice,
+      product.percentSavings,
+      product.image,
+      product.customerReviewAverage,
     );
     elementsContainer.appendChild(newEl);
-  });
+  })
+
+}
+
+window.addEventListener('load', () => {
+  fetchproducts();
 });
 
 window.addEventListener('filter-elements', (event) => {
